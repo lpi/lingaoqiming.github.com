@@ -9,7 +9,7 @@ def find_chinese_posts_in_dir(directory):
         directory (str): The path to the directory to scan.
 
     Returns:
-        list: A list of filenames that contain Chinese characters.
+        list: A list of filepaths that contain Chinese characters.
     """
     chinese_post_files = []
     chinese_char_pattern = re.compile(r'[\u4e00-\u9fff]')
@@ -21,9 +21,6 @@ def find_chinese_posts_in_dir(directory):
         return []
 
     for filename in files:
-        if not filename.startswith('2013-2-'):
-            continue
-
         filepath = os.path.join(directory, filename)
         if os.path.isfile(filepath):
             try:
@@ -31,7 +28,7 @@ def find_chinese_posts_in_dir(directory):
                     # Read a sample of the file to check for Chinese characters
                     content_sample = f.read(500)
                     if chinese_char_pattern.search(content_sample):
-                        chinese_post_files.append(filename)
+                        chinese_post_files.append(filepath)
             except Exception as e:
                 print(f"Could not process file {filename}: {e}")
 
@@ -42,8 +39,8 @@ if __name__ == "__main__":
     chinese_files = find_chinese_posts_in_dir(posts_directory)
 
     if chinese_files:
-        print("The following posts from February 2013 appear to be in Chinese:")
+        print("The following posts appear to be in Chinese:")
         for file in chinese_files:
             print(file)
     else:
-        print("No posts from February 2013 were found to be in Chinese.")
+        print("No posts were found to be in Chinese.")
