@@ -17,7 +17,7 @@ def find_chinese_posts():
                     content = f.read()
                     # Find all Chinese characters in the content
                     chinese_chars = chinese_char_re.findall(content)
-                    if len(chinese_chars) > 2:
+                    if len(chinese_chars) > 30:
                         print(filename)
             except Exception as e:
                 print(f"Error processing file {filename}: {e}")
