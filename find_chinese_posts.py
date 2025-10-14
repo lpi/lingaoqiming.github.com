@@ -1,22 +1,26 @@
+
 import os
 import re
 
-def contains_chinese(text):
-    return re.search(r'[一-鿿]', text)
+# This script finds all posts in the _posts folder with more than two Chinese characters.
 
-def find_chinese_posts(directory):
-    chinese_posts = []
-    for filename in os.listdir(directory):
-        if filename.endswith(".md"):
-            filepath = os.path.join(directory, filename)
-            with open(filepath, 'r', encoding='utf-8') as f:
-                content = f.read()
-                if contains_chinese(content):
-                    chinese_posts.append(filepath)
-    return chinese_posts
+def find_chinese_posts():
+    posts_dir = '_posts'
+    # Regex to match Chinese characters
+    chinese_char_re = re.compile(r'[\u4e00-\u9fa5]')
+
+    for filename in os.listdir(posts_dir):
+        if filename.endswith('.md'):
+            filepath = os.path.join(posts_dir, filename)
+            try:
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    # Find all Chinese characters in the content
+                    chinese_chars = chinese_char_re.findall(content)
+                    if len(chinese_chars) > 2:
+                        print(filename)
+            except Exception as e:
+                print(f"Error processing file {filename}: {e}")
 
 if __name__ == "__main__":
-    posts_dir = os.path.join(os.path.dirname(__file__), '_posts')
-    chinese_posts = find_chinese_posts(posts_dir)
-    for post in sorted(chinese_posts):
-        print(post)
+    find_chinese_posts()
